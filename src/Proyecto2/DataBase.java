@@ -1,15 +1,13 @@
 package Proyecto2;
 
-
-
 import java.sql.*;
 import java.util.ArrayList;
 
 public class DataBase {
 
-    private static String dbUrl = "jdbc:mysql://localhost:3306/practica2sd";
-    private static String dbUsername = "root"; //Usuario
-    private static String dbPassword = "behappy"; //Contrase�a
+	private static String dbUrl = "jdbc:mysql://localhost:3306/practica2sd";
+    private static String dbUsername = ""; //Usuario
+    private static String dbPassword = ""; //Contrase�a
     private static Connection conn = null;
     
     public DataBase(){
@@ -75,8 +73,8 @@ public class DataBase {
 		     
 			return valor;
 	    }
-	
-	public Profesor getProfesor(int codigoProfesor){
+
+	public Profesor getProfesor(String profesor){
     	
     	Statement stmt;
     	Profesor prof = null;
@@ -84,7 +82,7 @@ public class DataBase {
 		try {
 			stmt = conn.createStatement();
 			String sql = "SELECT profesorNombre, profesorTel, profesorCorreo, espaciofisNombre as cubiculo FROM profesor "
-					+ "JOIN espaciofis ON idespaciofis = espaciofis_idespaciofis WHERE idprofesor = " + codigoProfesor;
+					+ "JOIN espaciofis ON idespaciofis = espaciofis_idespaciofis WHERE profesorNombre rlike \"" + profesor + "\"";
 			ResultSet rs = stmt.executeQuery(sql);
 			while(rs.next()){
 				String nombre = rs.getString("profesorNombre");
@@ -102,13 +100,14 @@ public class DataBase {
 		return prof;
     }
 
-	public ArrayList<String> getMaterias(int codigoProfesor){
+	public ArrayList<String> getMaterias(String profesor){
 		Statement stmt;
     	ArrayList<String> materias = new ArrayList<String>();
     	
 		try {
 			stmt = conn.createStatement();
-			String sql = "SELECT ueaNombre FROM uea JOIN impartir ON iduea = uea_iduea WHERE profesor_idprofesor =  " + codigoProfesor;
+			String sql = "SELECT ueaNombre FROM uea JOIN impartir ON iduea = uea_iduea "
+					+ "JOIN profesor ON idprofesor = profesor_idprofesor WHERE profesorNombre rlike \"" + profesor + "\"";
 			ResultSet rs = stmt.executeQuery(sql);
 			while(rs.next()){
 				materias.add(rs.getString("ueaNombre"));

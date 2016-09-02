@@ -1,7 +1,5 @@
 package Proyecto2;
 
-
-
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
@@ -12,12 +10,12 @@ public class Geografico extends java.rmi.server.UnicastRemoteObject implements I
 	}
 
 	@Override
-	public String ubicacionDe(int codigoEspacio) throws RemoteException {
+	public String ubicacionDe(String espacio) throws RemoteException {
 		
 		DataBase db = new DataBase();
 		if(db.connect()){
 			String col = "espaciofisUbicacion";
-			String res = db.getString("SELECT " + col + " FROM espaciofis WHERE idespaciofis = " + codigoEspacio , col);
+			String res = db.getString("SELECT " + col + " FROM espaciofis WHERE espaciofisNombre rlike \"" + espacio + "\"", col);
 			db.disconnect();
 			return res;
 		}else{
@@ -26,10 +24,10 @@ public class Geografico extends java.rmi.server.UnicastRemoteObject implements I
 	}
 
 	@Override
-	public Profesor getDatosProfesor(int codigoProfesor) throws RemoteException {
+	public Profesor getDatosProfesor(String profesor) throws RemoteException {
 		DataBase db = new DataBase();
 		if(db.connect()){
-			Profesor res = db.getProfesor(codigoProfesor);
+			Profesor res = db.getProfesor(profesor);
 			db.disconnect();
 			return res;
 		}else{
@@ -38,10 +36,10 @@ public class Geografico extends java.rmi.server.UnicastRemoteObject implements I
 	}
 
 	@Override
-	public ArrayList<String> materiasImpartidas(int codigoProfesor) throws RemoteException {
+	public ArrayList<String> materiasImpartidas(String profesor) throws RemoteException {
 		DataBase db = new DataBase();
 		if(db.connect()){
-			ArrayList<String> res = db.getMaterias(codigoProfesor);
+			ArrayList<String> res = db.getMaterias(profesor);
 			db.disconnect();
 			return res;
 		}else{

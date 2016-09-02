@@ -1,8 +1,7 @@
 package Proyecto2;
 
-
-
 import java.rmi.Naming;
+import java.rmi.server.*;
 import java.rmi.registry.LocateRegistry;
 
 
@@ -28,8 +27,15 @@ public class Server {
 			IEntretenimiento entretenimiento = new Entretenimiento();
 			Naming.bind("rmi://localhost:1099/Entretenimiento", entretenimiento);
 			
+			//Otros
+			IOtros otros = new Otros();
+			Naming.bind("rmi://localhost:1099/Otros", otros);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
-		}	
+		}
+		
 	}
+
+
 }
